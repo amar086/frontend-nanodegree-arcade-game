@@ -4,7 +4,7 @@ class Enemy {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
         this.x = x;
-        this.y = y;
+        this.y = y + 60;
         this.width = 101;
         this.height = 81;
         this.speed = speed;
@@ -15,17 +15,24 @@ class Enemy {
     }
 
 // Update the enemy's position, required method for game
+// handles collision with player
 // Parameter: dt, a time delta between ticks
     update(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-        for (let i = 0; i < allEnemies.length; i++) {
-        this.x += this.speed * dt;
+        for(let enemy of allEnemies) {
+            this.x += this.speed * dt;
 
-        }
-        if (this.x > this.width * 5) {
-            this.x = - this.width;
+        //if(this.x > this.width * 5) {
+            //this.x = - this.width;
+        //}
+            if(this.x < this.width * 5) {
+            this.x += this.speed * dt;
+            }
+            else{
+                this.x = - this.width;
+            }
         }
     }
 
@@ -46,21 +53,35 @@ class Player {
         this.width = 101;
         this.height = 83;
         this.startX = this.width * 2;
-        this.startY = (this.height * 5) - 20;
+        this.startY = (this.height * 4) + 60;
         this.x = this.startX;
         this.y = this.startY;
     }
-
+// check for collisions of the player with the enemies
     update() {
-        //update enemy location
-        //handles collision with player
-    }
- //draw player on the screen
+        for(let enemy of allEnemies) {
 
+
+            if((enemy.x + enemy.width/2 > this.x && enemy.x < this.x + this.width/2) && this.y === enemy.y) {
+                // console.log(this.y, enemy.y, this.x, enemy.x);
+                this.resetPlayer();
+            }
+        }
+        if(this.y === 60) {
+            var that = this;
+            setTimeout(function(){
+                that.resetPlayer();
+                popUp();
+            },500);
+        }
+    }
+
+// draw player on the screen
     render() {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     }
 
+// moves the player according to the user input (key that was pressed)
     handleInput(input) {
         if(input === 'left') {
             if(this.x > 0) {
@@ -69,7 +90,7 @@ class Player {
 
         }
         else if(input === 'up') {
-            if(this.y > 0) {
+            if(this.y > this.height) {
                 this.y -= this.height;
             }
 
@@ -81,33 +102,51 @@ class Player {
 
         }
         else if(input === 'down') {
-            if (this.y < this.height * 4) {
+            if(this.y < this.height * 4) {
                 this.y += this.height;
             }
 
         }
 
     }
-    resetPlayer() {
 
+// moves player back to initial position on the game board
+    resetPlayer() {
+            this.x = this.startX;
+            this.y = this.startY;
     }
 }
 
+//create a end of game modal with a replay button
+function popUp() {
+    $('#congratsModal').modal('show');
+    clickReplay();
+}
+
+//replay button
+function clickReplay() {
+    const startOverBtn = document.getElementsByClassName("replay");
+        startOverBtn[0].addEventListener("click", function() {
+            $('#congratsModal').modal('hide');
+            player.resetPlayer();
+        });
+}
 
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-const bug1 = new Enemy(0, 60, 50);
-const bug2 = new Enemy(0, 150, 75);
-const bug3 = new Enemy(0, 230, 25);
-const bug4 = new Enemy(0, 60, 100);
-const bug5 = new Enemy(0, 150, 20);
-const bug6 = new Enemy(0, 230, 65);
+const bug1 = new Enemy(-101, 0, 10);
+const bug2 = new Enemy(-101, 0, 20);
+const bug3 = new Enemy(-101, 83, 30);
+const bug4 = new Enemy(-101, 83, 40);
+const bug5 = new Enemy(-101, 83*2, 15);
+
 
 const allEnemies = [];
 
-allEnemies.push(bug1, bug2, bug3, bug4, bug5, bug6);
+// allEnemies.push(bug2);
+allEnemies.push(bug1, bug2, bug3, bug4, bug5);
 
 const player = new Player();
 
