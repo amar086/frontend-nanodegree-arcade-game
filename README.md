@@ -14,7 +14,7 @@ In the game we have a player and some enemies (bugs) to overcome. The goal of th
 The player can move left, right, up and down and the enemies move at varying speeds on the paved block portion of the game board.
 When the player collides with an enemy, the game is reset and the player moves back to his starting point.
 
-Once the player reaches the water (i.e., the top of the game board), the game is won and a modal appears allowing the player to click on a "play again" button.
+Once the player reaches the water (i.e., the top of the game board), the game is won and a modal appears allowing the player to click on a "Start Over" button.
 
 
 ## Resources Used
