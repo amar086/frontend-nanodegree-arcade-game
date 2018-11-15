@@ -24,9 +24,6 @@ class Enemy {
         for(let enemy of allEnemies) {
             this.x += this.speed * dt;
 
-        //if(this.x > this.width * 5) {
-            //this.x = - this.width;
-        //}
             if(this.x < this.width * 5) {
             this.x += this.speed * dt;
             }
@@ -63,7 +60,6 @@ class Player {
 
 
             if((enemy.x + enemy.width/2 > this.x && enemy.x < this.x + this.width/2) && this.y === enemy.y) {
-                // console.log(this.y, enemy.y, this.x, enemy.x);
                 this.resetPlayer();
             }
         }
@@ -117,13 +113,13 @@ class Player {
     }
 }
 
-//create a end of game modal with a replay button
+// create a end of game modal with a replay button
 function popUp() {
     $('#congratsModal').modal('show');
     clickReplay();
 }
 
-//replay button
+// replay button
 function clickReplay() {
     const startOverBtn = document.getElementsByClassName("replay");
         startOverBtn[0].addEventListener("click", function() {
